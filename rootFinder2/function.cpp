@@ -44,6 +44,31 @@ void function::initFactorsDer()
     }
 }
 
+void function::initDerivatives()
+{
+    for (size_t i = 1; i < degree; i++)
+    {
+        fDer[i]->degree = degree - i;
+        initFactorsDer(fDer[i]);
+
+    }
+}
+
+void function::initFactorsDer(function* f)
+{
+    f->degree = degreeDer;
+    for (size_t i = 0; i < degree + 1; i++)
+    {
+        if (i == degree)
+        {
+            f->factorsDer[i] = 0;
+            break;
+        }
+
+        f->factorsDer[i] = factors[i] * (degree - i);
+    }
+}
+
 void function::getcurrX()
 {
     std::cout << "where to start?:";
@@ -107,4 +132,16 @@ long double function::getRoot()
     }
     return r;
 }
+
+long double function::getRoot(function* f)
+{
+    long double r;
+    for(size_t i = 0; i < 100; i++)
+    {
+        r = f->getSlopeRoot();
+        f->updatecurrX();
+    }
+
+}
+
 
